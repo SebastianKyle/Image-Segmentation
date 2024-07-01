@@ -1,0 +1,10 @@
+^D:\SELF_PRACTICING\COMPUTER VISION\LEARNING_OPENCV\IMAGESEGMENTATION\OUT\BUILD\VISUAL STUDIO\CMAKEFILES\49646FCE99185A3F13B44572284753BC\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation" "-BD:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/out/build/Visual Studio" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/out/build/Visual Studio/ImageSegmentation.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

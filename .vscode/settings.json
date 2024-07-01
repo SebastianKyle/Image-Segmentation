@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "cmath": "cpp",
+        "ostream": "cpp",
+        "array": "cpp",
+        "map": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "algorithm": "cpp",
+        "queue": "cpp"
+    },
+    "cmake.debugConfig": {
+        "args": [
+            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/road.jpg",
+            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/watershed_road.jpg",
+            "-watershed",
+            "1"
+        ],
+        "cwd": "${workspaceFolder}",
+    }
+}
