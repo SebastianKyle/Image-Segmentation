@@ -74,9 +74,9 @@ original | otsu thresholded
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -region -grow 112
 ```
 
-original | seed points | region growing segmented (threshold = 112)
+Original | Seed points | Region growing segmented (threshold = 112)
 :--------------------------:|:--------------------------:|:--------------------------:
-![](./images/coffeebeans.jpg) | ![](./images/coffeebeans_seed_points.png) | ![](./results/images/region_growing_coffeebeans.jpg)
+![](./images/coffeeBeans.jpg) | ![](./images/coffeeBeans_seed_points.png) | ![](./results/images/region_growing_coffeeBeans.jpg)
 
 ## Watershed 
 
