@@ -117,3 +117,7 @@ Original | K-means segmented (num-clusters = 6, max-iterations = 100)
 Original | Mean shift segmented (spatial-radius = 30.0, color-radius = 30.0, max-iterations = 100)
 :--------------------------:|:--------------------------:
 ![](./images/cars.jpg) | ![](./results/images/meanshift_cars.jpg)
+
+Coins | Mean shift segmented (spatial-radius = 30.0, color-radius = 30.0, max-iterations = 100)
+:--------------------------:|:--------------------------:
+![](./images/coins.png) | ![](./results/images/meanshift_coins.png)
