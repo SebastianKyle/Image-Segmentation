@@ -10,6 +10,9 @@
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\MorphologicalProcessing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\KDTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\ImageSegmentation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

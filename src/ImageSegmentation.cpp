@@ -478,7 +478,7 @@ int ImageSegmentation::regionSplitMerge(const cv::Mat &source_img, cv::Mat &dest
 
 /*****************************************************************************************************************
  * Distance Transform
- * 
+ *
  * Obtain distance of foreground pixels to the nearest background pixel
  */
 void ImageSegmentation::distanceTransform(const cv::Mat &binary, cv::Mat &distTransform)
@@ -541,10 +541,11 @@ void ImageSegmentation::distanceTransform(const cv::Mat &binary, cv::Mat &distTr
 
 /*****************************************************************************************************************
  * Label internal markers
- * 
+ *
  * Label the internal markers for objects using the foreground pixels
  */
-void ImageSegmentation::labelMarkers(const cv::Mat &sureFgr, cv::Mat &markers, cv::Mat &distTransform, int &label) {
+void ImageSegmentation::labelMarkers(const cv::Mat &sureFgr, cv::Mat &markers, cv::Mat &distTransform, int &label)
+{
     for (int y = 0; y < sureFgr.rows; y++)
     {
         for (int x = 0; x < sureFgr.cols; x++)
@@ -568,7 +569,7 @@ void ImageSegmentation::labelMarkers(const cv::Mat &sureFgr, cv::Mat &markers, c
                             int ny = p.y + i;
 
                             if (nx >= 0 && nx < sureFgr.cols && ny >= 0 && ny < sureFgr.rows &&
-                                sureFgr.at<uchar>(ny, nx) == 255 && markers.at<int>(ny, nx) == 0 && 
+                                sureFgr.at<uchar>(ny, nx) == 255 && markers.at<int>(ny, nx) == 0 &&
                                 distTransform.at<float>(ny, nx) >= 0.1)
                             {
                                 markers.at<int>(ny, nx) = label;
@@ -585,8 +586,8 @@ void ImageSegmentation::labelMarkers(const cv::Mat &sureFgr, cv::Mat &markers, c
 }
 
 /*****************************************************************************************************************
- * Apply Watershed 
- * 
+ * Apply Watershed
+ *
  * Populate internal markers and define watershed lines
  */
 void ImageSegmentation::applyWatershed(cv::Mat &markers, cv::Mat &distTransform)
@@ -625,7 +626,8 @@ void ImageSegmentation::applyWatershed(cv::Mat &markers, cv::Mat &distTransform)
             {
                 if (markers.at<int>(ny, nx) == 1)
                 {
-                    if (distTransform.at<float>(ny, nx) >= 0.15) {
+                    if (distTransform.at<float>(ny, nx) >= 0.15)
+                    {
                         markers.at<int>(ny, nx) = markers.at<int>(y, x);
                         pq.push({ny, nx});
                     }
@@ -641,15 +643,15 @@ void ImageSegmentation::applyWatershed(cv::Mat &markers, cv::Mat &distTransform)
 
 /*****************************************************************************************************************
  * Watershed Segmentation
- * 
+ *
  * Combine functionalities to produce segmented image:
- * 
- *  -> Apply Otsu threshold (may flip based on user decision) 
+ *
+ *  -> Apply Otsu threshold (may flip based on user decision)
  *  -> Apply morphological filters to obtain "sure background" and "sure foreground" images
  *  -> Compute distance transform image for thresholded image
  *  -> Label the internal markers based on foreground image and distance transform image
  *  -> Apply watershed to determine outer markers
- *  -> Generate colors and produce segmented image 
+ *  -> Generate colors and produce segmented image
  */
 int ImageSegmentation::watershed(const cv::Mat &source_img, cv::Mat &dest_img, bool flipBinary)
 {
@@ -662,7 +664,8 @@ int ImageSegmentation::watershed(const cv::Mat &source_img, cv::Mat &dest_img, b
     convertToGray(source_img, gray);
 
     otsuThreshold(source_img, binary);
-    if (flipBinary) {
+    if (flipBinary)
+    {
         cv::bitwise_not(binary, binary);
     }
 
@@ -732,6 +735,189 @@ int ImageSegmentation::watershed(const cv::Mat &source_img, cv::Mat &dest_img, b
                 dest_img.at<cv::Vec3b>(y, x) = cv::Vec3b(0, 0, 255); // watershed lines
             }
         }
+    }
+
+    return 1;
+}
+
+cv::Vec3f ImageSegmentation::calculateCentroid(const std::vector<cv::Vec3f> &cluster)
+{
+    cv::Vec3f centroid(0, 0, 0);
+
+    for (const auto &pixel : cluster)
+    {
+        centroid += pixel;
+    }
+
+    centroid /= static_cast<float>(cluster.size());
+    return centroid;
+}
+
+int ImageSegmentation::kmeans(const cv::Mat &source_img, cv::Mat &dest_img, int k, int maxIter)
+{
+    if (!source_img.data)
+        return 0;
+
+    cv::Mat data;
+    source_img.convertTo(data, CV_32F);
+    data = data.reshape(3, data.total());
+
+    // Randomly initialize cluster centers
+    std::vector<cv::Vec3f> centers(k);
+    cv::RNG rng(cv::getTickCount());
+    for (int i = 0; i < k; i++)
+    {
+        centers[i] = data.at<cv::Vec3f>(rng.uniform(0, data.rows));
+    }
+
+    std::vector<int> labels(data.rows, 0);
+    std::vector<std::vector<cv::Vec3f>> clusters(k);
+    for (int iter = 0; iter < maxIter; iter++)
+    {
+        for (auto &cluster : clusters)
+        {
+            cluster.clear();
+        }
+
+        // Assign data points to nearest cluster
+        for (int i = 0; i < data.rows; i++)
+        {
+            float minDist = std::numeric_limits<float>::max();
+
+            int minIdx = 0;
+            for (int j = 0; j < k; j++)
+            {
+                float dist = cv::norm(data.at<cv::Vec3f>(i) - centers[j]);
+
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    minIdx = j;
+                }
+            }
+
+            labels[i] = minIdx;
+            clusters[minIdx].push_back(data.at<cv::Vec3f>(i));
+        }
+
+        bool convergence = true;
+        for (int j = 0; j < k; j++)
+        {
+            cv::Vec3f newCenter = calculateCentroid(clusters[j]);
+            if (cv::norm(newCenter - centers[j]) > 1e-4)
+            {
+                convergence = false;
+            }
+
+            centers[j] = newCenter;
+        }
+
+        if (convergence)
+            break;
+    }
+
+    dest_img = cv::Mat(source_img.size(), source_img.type());
+    for (int i = 0; i < data.rows; ++i)
+    {
+        dest_img.at<cv::Vec3b>(i / source_img.cols, i % source_img.cols) = centers[labels[i]];
+    }
+
+    return 1;
+}
+
+float ImageSegmentation::spatialDistance(const cv::Point2f &p1, const cv::Point2f &p2)
+{
+    return cv::norm(p1 - p2);
+}
+
+float ImageSegmentation::colorDistance(const cv::Vec3f &p1, const cv::Vec3f &p2)
+{
+    return cv::norm(p1 - p2);
+}
+
+cv::Vec3f ImageSegmentation::shiftPoint(const cv::Vec3f &point, const std::vector<cv::Vec3f> &points, const cv::Point2f &currPos, const cv::Mat &positions, float spatialRadius, float colorRadius, KDTree &kdtree)
+{
+    std::vector<int> indices;
+    std::vector<float> dists;
+
+    kdtree.radiusSearch(currPos, spatialRadius, indices, dists);
+
+    cv::Vec3f numerator(0, 0, 0);
+    float denominator = 0;
+
+    for (size_t i = 0; i < indices.size(); i++)
+    {
+        int idx = indices[i];
+        float spatialDist = std::sqrt(dists[i]);
+
+        if (spatialDist < spatialRadius)
+        {
+            float colorDist = colorDistance(point, points[idx]);
+
+            if (colorDist < colorRadius)
+            {
+                float weight = exp(-(colorDist * colorDist) / (2 * colorRadius * colorRadius));
+                numerator += weight * points[idx];
+                denominator += weight;
+            }
+        }
+    }
+
+    return numerator / denominator;
+}
+
+int ImageSegmentation::meanShift(const cv::Mat &source_img, cv::Mat &dest_img, float spatialRadius, float colorRadius, int maxIter)
+{
+    if (!source_img.data)
+        return 0;
+
+    cv::Mat data;
+    source_img.convertTo(data, CV_32F);
+    data = data.reshape(3, data.total());
+
+    // Initialize positions
+    std::vector<cv::Point2f> positions(data.rows);
+    for (int y = 0; y < source_img.rows; y++)
+    {
+        for (int x = 0; x < source_img.cols; x++)
+        {
+            positions[y * source_img.cols + x] = cv::Point2f(x, y);
+        }
+    }
+
+    KDTree kdtree(positions);
+
+    // Initialize shift points
+    std::vector<cv::Vec3f> shiftedPts(data.rows);
+    for (int i = 0; i < data.rows; i++)
+    {
+        shiftedPts[i] = data.at<cv::Vec3f>(i);
+    }
+
+    // Loop until convergence
+    for (int iter = 0; iter < maxIter; iter++)
+    {
+        bool convergence = true;
+
+        for (int i = 0; i < shiftedPts.size(); i++)
+        {
+            cv::Vec3f newPt = shiftPoint(shiftedPts[i], shiftedPts, positions[i], data, spatialRadius, colorRadius, kdtree);
+
+            if (cv::norm(newPt - shiftedPts[i]) > 1e-4)
+            {
+                convergence = false;
+            }
+            shiftedPts[i] = newPt;
+        }
+
+        if (convergence)
+            break;
+    }
+
+    dest_img = cv::Mat(source_img.size(), source_img.type());
+    for (int i = 0; i < data.rows; ++i)
+    {
+        dest_img.at<cv::Vec3b>(i / source_img.cols, i % source_img.cols) = shiftedPts[i];
     }
 
     return 1;

@@ -336,6 +336,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\main.cpp" />
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\libs.cpp" />
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\MorphologicalProcessing.cpp" />
+    <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\KDTree.cpp" />
     <ClCompile Include="D:\Self_Practicing\Computer Vision\Learning_OpenCV\ImageSegmentation\src\ImageSegmentation.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,12 @@ int main(int argc, char **argv)
         bool flipBinary = char_2_int(argv, 4) == 1;
         success = ImageSegmentation::watershed(source_img, dest_img, flipBinary);
     }
+    else if (str_compare(argv[3], "-kmeans")) {
+        success = ImageSegmentation::kmeans(source_img, dest_img, char_2_int(argv, 4), char_2_int(argv, 5));
+    }
+    else if (str_compare(argv[3], "-meanshift")) {
+        success = ImageSegmentation::meanShift(source_img, dest_img, char_2_double(argv, 4), char_2_double(argv, 5), char_2_int(argv, 6));
+    }
 
     if (success)
     {

@@ -252,6 +252,9 @@ CTEST_SUBMIT_RETRY_DELAY:STRING=5
 //Maximum time allowed before CTest will kill the test.
 DART_TESTING_TIMEOUT:STRING=1500
 
+//Path to a program.
+GITCOMMAND:FILEPATH=C:/Program Files/Git/cmd/git.exe
+
 //Value Computed by CMake
 ImageSegmentation_BINARY_DIR:STATIC=D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/out/build/Visual Studio
 
@@ -454,6 +457,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][TRUE][c ][v2.0()]
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-openmp][v2.0()]
 //Details about finding OpenMP_CXX
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-openmp][v2.0()]
+//ADVANCED property for variable: GITCOMMAND
+GITCOMMAND-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MAKECOMMAND
 MAKECOMMAND-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MEMORYCHECK_COMMAND

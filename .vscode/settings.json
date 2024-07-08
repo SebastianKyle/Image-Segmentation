@@ -13,10 +13,56 @@
     },
     "cmake.debugConfig": {
         "args": [
-            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/road.jpg",
-            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/watershed_road.jpg",
-            "-watershed",
-            "1"
+            // Global theshold
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/coins.png",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/threshold_global_coins.png",
+            // "-threshold",
+            // "-global",
+            // "100.0",
+            // "255.0",
+
+            // Adaptive threshold
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/beans.jpg",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/threshold_adaptive_beans.jpg",
+            // "-threshold",
+            // "-adaptive",
+            // "255.0",
+            // "7",
+            // "8",
+
+            // Otsu threshold
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/beans.jpg",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/threshold_otsu_beans.jpg",
+            // "-threshold",
+            // "-otsu",
+
+            // Region growing
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/coffeeBeans.jpg",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/region_growing_coffeeBeans.jpg",
+            // "-region",
+            // "-grow",
+            // "112"
+
+            // Watershed
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/coffeeBeans.jpg",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/region_growing_coffeeBeans.jpg",
+            // "-watershed",
+            // "1"
+
+            // K-means
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/cars.jpg",
+            // "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/kmeans_cars.jpg",
+            // "-kmeans",
+            // "6",
+            // "100",
+
+            // Mean shift
+            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/images/coins.png",
+            "D:/Self_Practicing/Computer Vision/Learning_OpenCV/ImageSegmentation/results/images/meanshift_coins.png",
+            "-meanshift",
+            "30.0",
+            "30.0",
+            "100"
         ],
         "cwd": "${workspaceFolder}",
     }

@@ -4,6 +4,7 @@
 
 #include "libs.h"
 #include "MorphologicalProcessing.h"
+#include "KDTree.h"
 
 class ImageSegmentation
 {
@@ -24,6 +25,12 @@ private:
     static void labelMarkers(const cv::Mat &sureFgr, cv::Mat &markers, cv::Mat &distTransform, int &label);
     static void applyWatershed(cv::Mat &markers, cv::Mat &distTransform);
 
+    static cv::Vec3f calculateCentroid(const std::vector<cv::Vec3f> &cluster);
+
+    static float spatialDistance(const cv::Point2f &p1, const cv::Point2f &p2);
+    static float colorDistance(const cv::Vec3f &p1, const cv::Vec3f &p2);
+    static cv::Vec3f shiftPoint(const cv::Vec3f &point, const std::vector<cv::Vec3f> &points, const cv::Point2f &currPos, const cv::Mat &positions, float spatialRadius, float colorRadius, KDTree &kdtree);
+
 public:
     /* Thresholding methods */
     static int globalThreshold(const cv::Mat &source_img, cv::Mat &dest_img, double thresh, double maxVal);
@@ -36,8 +43,12 @@ public:
 
     static int regionSplitMerge(const cv::Mat &source_img, cv::Mat &dest_img, int threshold);
 
-    /* Watersheds and K-means */
+    /* Watershed method */
     static int watershed(const cv::Mat &source_img, cv::Mat &dest_img, bool flipBinary = false);
+
+    /* K-means and Mean-Shift methods */
+    static int kmeans(const cv::Mat &source_img, cv::Mat &dest_img, int k, int maxIter = 100);
+    static int meanShift(const cv::Mat &source_img, cv::Mat &dests_img, float spatialRadius, float colorRadius, int maxIter = 100);
 };
 
 #endif

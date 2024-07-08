@@ -19,6 +19,7 @@ set(SOURCES
     main.cpp
     src/libs.cpp
     src/MorphologicalProcessing.cpp
+    src/KDTree.cpp
     src/ImageSegmentation.cpp
 )
 
