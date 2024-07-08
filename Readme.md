@@ -42,7 +42,7 @@ cmake ..
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -threshold -global <threshold> <max-value>
 ```
 
-Original | Global thresholded (threshold = 100.0, max-value = 255.0)
+Coins | Global thresholded (threshold = 100.0, max-value = 255.0)
 :--------------------------:|:--------------------------:
 ![](./images/coins.png) | ![](./results/images/threshold_global_coins.png)
 
@@ -52,7 +52,7 @@ Original | Global thresholded (threshold = 100.0, max-value = 255.0)
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -threshold -adaptive <max-value> <kernel-size> <c>
 ```
 
-Original | Adaptive thresholded (max-value = 255.0, kernel-size = 7, c = 8)
+Beans | Adaptive thresholded (max-value = 255.0, kernel-size = 7, c = 8)
 :--------------------------:|:--------------------------:
 ![](./images/beans.jpg) | ![](./results/images/threshold_adaptive_beans.jpg)
 
@@ -63,7 +63,7 @@ Original | Adaptive thresholded (max-value = 255.0, kernel-size = 7, c = 8)
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -threshold -otsu
 ```
 
-original | otsu thresholded
+Beans | otsu thresholded
 :--------------------------:|:--------------------------:
 ![](./images/beans.jpg) | ![](./results/images/threshold_otsu_beans.jpg)
 
@@ -74,7 +74,7 @@ original | otsu thresholded
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -region -grow 112
 ```
 
-Original | Seed points | Region growing segmented (threshold = 112)
+Coffee Beans | Seed points | Region growing segmented (threshold = 112)
 :--------------------------:|:--------------------------:|:--------------------------:
 ![](./images/coffeeBeans.jpg) | ![](./images/coffeeBeans_seed_points.png) | ![](./results/images/region_growing_coffeeBeans.jpg)
 
@@ -86,12 +86,12 @@ Original | Seed points | Region growing segmented (threshold = 112)
 
 - flip-binary-threshold: if the foreground or objects is darker than the background, we may want to flip the binary thresholded image (by otsu method). Flip if 1 (true), do nothing otherwise.
 
-Original | Watershed thresholded (flip-binary-threshold = 0)
+Coins | Watershed thresholded (flip-binary-threshold = 0)
 :--------------------------:|:--------------------------:
 ![](./images/coins.png) | ![](./results/images/watershed_coins.png)
-Original | Watershed thresholded (flip-binary-threshold = 1)
+Moss Cells | Watershed thresholded (flip-binary-threshold = 1)
 ![](./images/mossCells.png) | ![](./results/images/watershed_mossCells.png)
-Original | Watershed thresholded (flip-binary-threshold = 0)
+Banana Cells | Watershed thresholded (flip-binary-threshold = 0)
 ![](./images/bananaCell.jpg) | ![](./results/images/watershed_bananaCell.jpg)
 
 ## K-means
@@ -100,7 +100,7 @@ Original | Watershed thresholded (flip-binary-threshold = 0)
 .\ImageSegmentation.exe path/to/input/image.png path/to/output/image.png -kmeans <num-clusters> <max-iterations>
 ```
 
-Original | K-means segmented (num-clusters = 3, max-iterations = 100)
+Beans | K-means segmented (num-clusters = 3, max-iterations = 100)
 :--------------------------:|:--------------------------:
 ![](./images/beans.jpg) | ![](./results/images/kmeans_beans.jpg)
 
